@@ -33,12 +33,13 @@ export default function ExpressionEvaluator() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="">
       <input
         type="text"
         value={input}
         onChange={handleInputChange}
         placeholder="Enter expression"
+        className="px-3 py-2 rounded-lg"
       />
       <div className="space-x-4 space-y-4">
         <button onClick={evaluateExpression}>Evaluate</button>
