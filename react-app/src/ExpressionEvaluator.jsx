@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import parseExpression from "../../parser";
+import parseExpression from "./parser/parser";
 
 export default function ExpressionEvaluator() {
   const [input, setInput] = useState("");
