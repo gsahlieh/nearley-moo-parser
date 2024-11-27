@@ -1,4 +1,4 @@
-const parseExpression = require("./parser");
+const parseExpression = require(".");
 
 const examples = [
   "1 + 2 = 3",
