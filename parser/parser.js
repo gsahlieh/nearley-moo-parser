@@ -1,7 +1,7 @@
-import nearley from "nearley";
-import grammar from "./grammar";
+const nearley = require("nearley");
+const grammar = require("./grammar");
 
-export default function parseExpression(input) {
+function parseExpression(input) {
   const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
   const trace = [];
 
@@ -40,3 +40,5 @@ export default function parseExpression(input) {
     };
   }
 }
+
+module.exports = parseExpression;

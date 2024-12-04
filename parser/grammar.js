@@ -1,7 +1,7 @@
 // Generated automatically by nearley, version 2.20.1
 // http://github.com/Hardmath123/nearley
 
-import lexer from "./lexer";
+const lexer = require("./lexer");
 
 (function () {
   function id(x) {
@@ -109,11 +109,10 @@ import lexer from "./lexer";
     ],
     ParserStart: "comparison",
   };
+
   if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
     module.exports = grammar;
   } else {
     window.grammar = grammar;
   }
 })();
-
-export default grammar;

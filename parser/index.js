@@ -1,4 +1,4 @@
-const parseExpression = require(".");
+const parseExpression = require("./parser");
 
 const examples = [
   "1 + 2 = 3",
@@ -22,6 +22,5 @@ const examples = [
 
 examples.forEach((example) => {
   console.log(`Parsing input: "${example}"`);
-  const result = parseExpression(example);
-  console.log(`Output:`, result);
+  parseExpression(example);
 });
