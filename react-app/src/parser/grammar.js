@@ -72,6 +72,11 @@ var grammar = {
       postprocess: ([op]) => "minus",
     },
     {
+      name: "add_op",
+      symbols: [{ literal: "add" }],
+      postprocess: ([op]) => "plus",
+    },
+    {
       name: "mul_op",
       symbols: [{ literal: "*" }],
       postprocess: ([op]) => "multiply",

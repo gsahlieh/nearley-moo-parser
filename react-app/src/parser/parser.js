@@ -30,7 +30,7 @@ export default function parseExpression(input) {
     }
     console.log("Parsing resulted in ambiguity or incompleteness.");
     return {
-      result: { error: "Input is ambiguous or incomplete." },
+      result: "Input is ambiguous or incomplete.",
       ast: null,
       trace,
     };

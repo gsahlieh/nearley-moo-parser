@@ -1,3 +1,22 @@
+# From react-app/ directory:
+# npx nearleyc src/parser/grammar.ne -o grammar.js
+
+# Compiled JS STARTS WITH:
+# import lexer from "./lexer";
+
+# function id(x) {
+#   return x[0];
+# }
+
+# var grammar = {
+
+# Compiled JS ENDS WITH:
+#   ParserStart: "comparison",
+# };
+
+# export default grammar;
+
+
 @{%
 const lexer = require('./lexer');
 %}
@@ -37,7 +56,7 @@ factor -> number {%
   ([lb, exp, rb]) => exp 
 %}
 
-add_op -> "+" {% ([op]) => "plus" %} | "-" {% ([op]) => "minus" %}
+add_op -> "+" {% ([op]) => "plus" %} | "-" {% ([op]) => "minus" %} | "add" {% ([op]) => "plus" %}
 mul_op -> "*" {% ([op]) => "multiply" %} | "/" {% ([op]) => "divide" %}
 comp_op -> "=" {% ([op]) => "equals" %} | "!=" {% ([op]) => "notEquals" %}
 number -> [0-9]:+
