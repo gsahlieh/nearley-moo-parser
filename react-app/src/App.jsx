@@ -1,8 +1,6 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import icon from "/icon.png";
 import "./App.css";
 import ExpressionEvaluator from "./ExpressionEvaluator";
+import icon from "/icon.png";
 
 function App() {
   return (

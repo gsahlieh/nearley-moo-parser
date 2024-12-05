@@ -1,13 +1,12 @@
 // Generated automatically by nearley, version 2.20.1
 // http://github.com/Hardmath123/nearley
-
 import lexer from "./lexer";
 
 function id(x) {
   return x[0];
 }
 
-const grammar = {
+var grammar = {
   Lexer: lexer,
   ParserRules: [
     {
@@ -17,10 +16,7 @@ const grammar = {
         op === "equals" ? lhs === rhs : lhs !== rhs,
     },
     { name: "expression$ebnf$1", symbols: [] },
-    {
-      name: "expression$ebnf$1$subexpression$1",
-      symbols: ["add_op", "term"],
-    },
+    { name: "expression$ebnf$1$subexpression$1", symbols: ["add_op", "term"] },
     {
       name: "expression$ebnf$1",
       symbols: ["expression$ebnf$1", "expression$ebnf$1$subexpression$1"],
@@ -63,7 +59,7 @@ const grammar = {
     {
       name: "factor",
       symbols: [{ literal: "(" }, "expression", { literal: ")" }],
-      postprocess: ([, exp]) => exp,
+      postprocess: ([lb, exp, rb]) => exp,
     },
     {
       name: "add_op",
@@ -104,7 +100,6 @@ const grammar = {
       },
     },
     { name: "number", symbols: ["number$ebnf$1"] },
-    { name: "whitespace", symbols: [{ literal: " " }] },
   ],
   ParserStart: "comparison",
 };

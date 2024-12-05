@@ -5,13 +5,18 @@ function parseExpression(input) {
   const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
   const trace = [];
 
-  // Override the lexer to capture tokens
+  // Override the lexer to:
+  // - Capture tokens
+  // - Skip whitespace
   parser.lexer.next = (function (next) {
     return function () {
-      const token = next.call(this);
-      if (token) {
-        trace.push(`Token: ${token.value}, Type: ${token.type}`);
-      }
+      let token;
+      do {
+        token = next.call(this); // ensures the original lexer.next() function is called within the same context, being the SAME lexer object instance
+        if (token && token.type !== "whitespace") {
+          trace.push(`Token: ${token.value}, Type: ${token.type}`);
+        }
+      } while (token && token.type === "whitespace");
       return token;
     };
   })(parser.lexer.next);
