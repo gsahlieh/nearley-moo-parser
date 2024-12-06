@@ -37,7 +37,21 @@ factor -> number {%
   ([lb, exp, rb]) => exp 
 %}
 
-add_op -> "+" {% ([op]) => "plus" %} | "-" {% ([op]) => "minus" %}
+add_op -> ("+" | "-"):+ {% 
+  ([ops]) => {
+    const plusCount = ops.filter(op => op[0].value === "+").length;
+    const minusCount = ops.filter(op => op[0].value === "-").length;
+    return (minusCount) % 2 === 0 ? "plus" : "minus";
+  } 
+%}
 mul_op -> "*" {% ([op]) => "multiply" %} | "/" {% ([op]) => "divide" %}
 comp_op -> "=" {% ([op]) => "equals" %} | "!=" {% ([op]) => "notEquals" %}
-number -> [0-9]:+
+number -> "+" [0-9]:+ {% 
+  ([, value]) => parseFloat(value) 
+%}
+        | "-" [0-9]:+ {% 
+  ([, value]) => parseFloat('-' + value) 
+%}
+        | [0-9]:+ {% 
+  ([value]) => parseFloat(value) 
+%}
