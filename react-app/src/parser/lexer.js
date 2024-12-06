@@ -11,7 +11,6 @@ const lexer = moo.compile({
   notEquals: "!=",
   lparen: "(",
   rparen: ")",
-  add: "add",
 });
 
 export default lexer;

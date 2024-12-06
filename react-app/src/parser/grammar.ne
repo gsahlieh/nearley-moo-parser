@@ -1,7 +1,9 @@
-# From react-app/ directory:
+# To compile from react-app/ directory:
 # npx nearleyc src/parser/grammar.ne -o grammar.js
 
-# Compiled JS STARTS WITH:
+# ###############################
+# COMPILED JS STARTS WITH:
+# ###############################
 # import lexer from "./lexer";
 
 # function id(x) {
@@ -9,12 +11,14 @@
 # }
 
 # var grammar = {
-
-# Compiled JS ENDS WITH:
-#   ParserStart: "comparison",
+# ###############################
+# COMPILED JS ENDS WITH:
+# ###############################
+#  , ParserStart: "comparison",
 # };
 
 # export default grammar;
+# ###############################
 
 
 @{%
@@ -56,7 +60,21 @@ factor -> number {%
   ([lb, exp, rb]) => exp 
 %}
 
-add_op -> "+" {% ([op]) => "plus" %} | "-" {% ([op]) => "minus" %} | "add" {% ([op]) => "plus" %}
+add_op -> ("+" | "-"):+ {% 
+  ([ops]) => {
+    const plusCount = ops.filter(op => op[0].value === "+").length;
+    const minusCount = ops.filter(op => op[0].value === "-").length;
+    return (minusCount) % 2 === 0 ? "plus" : "minus";
+  } 
+%}
 mul_op -> "*" {% ([op]) => "multiply" %} | "/" {% ([op]) => "divide" %}
 comp_op -> "=" {% ([op]) => "equals" %} | "!=" {% ([op]) => "notEquals" %}
-number -> [0-9]:+
+number -> "+" [0-9]:+ {% 
+  ([, value]) => parseFloat(value) 
+%}
+        | "-" [0-9]:+ {% 
+  ([, value]) => parseFloat('-' + value) 
+%}
+        | [0-9]:+ {% 
+  ([value]) => parseFloat(value) 
+%}

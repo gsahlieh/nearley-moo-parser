@@ -61,20 +61,26 @@ var grammar = {
       symbols: [{ literal: "(" }, "expression", { literal: ")" }],
       postprocess: ([lb, exp, rb]) => exp,
     },
+    { name: "add_op$ebnf$1$subexpression$1", symbols: [{ literal: "+" }] },
+    { name: "add_op$ebnf$1$subexpression$1", symbols: [{ literal: "-" }] },
+    { name: "add_op$ebnf$1", symbols: ["add_op$ebnf$1$subexpression$1"] },
+    { name: "add_op$ebnf$1$subexpression$2", symbols: [{ literal: "+" }] },
+    { name: "add_op$ebnf$1$subexpression$2", symbols: [{ literal: "-" }] },
     {
-      name: "add_op",
-      symbols: [{ literal: "+" }],
-      postprocess: ([op]) => "plus",
+      name: "add_op$ebnf$1",
+      symbols: ["add_op$ebnf$1", "add_op$ebnf$1$subexpression$2"],
+      postprocess: function arrpush(d) {
+        return d[0].concat([d[1]]);
+      },
     },
     {
       name: "add_op",
-      symbols: [{ literal: "-" }],
-      postprocess: ([op]) => "minus",
-    },
-    {
-      name: "add_op",
-      symbols: [{ literal: "add" }],
-      postprocess: ([op]) => "plus",
+      symbols: ["add_op$ebnf$1"],
+      postprocess: ([ops]) => {
+        const plusCount = ops.filter((op) => op[0].value === "+").length;
+        const minusCount = ops.filter((op) => op[0].value === "-").length;
+        return minusCount % 2 === 0 ? "plus" : "minus";
+      },
     },
     {
       name: "mul_op",
@@ -104,7 +110,37 @@ var grammar = {
         return d[0].concat([d[1]]);
       },
     },
-    { name: "number", symbols: ["number$ebnf$1"] },
+    {
+      name: "number",
+      symbols: [{ literal: "+" }, "number$ebnf$1"],
+      postprocess: ([, value]) => parseFloat(value),
+    },
+    { name: "number$ebnf$2", symbols: [/[0-9]/] },
+    {
+      name: "number$ebnf$2",
+      symbols: ["number$ebnf$2", /[0-9]/],
+      postprocess: function arrpush(d) {
+        return d[0].concat([d[1]]);
+      },
+    },
+    {
+      name: "number",
+      symbols: [{ literal: "-" }, "number$ebnf$2"],
+      postprocess: ([, value]) => parseFloat("-" + value),
+    },
+    { name: "number$ebnf$3", symbols: [/[0-9]/] },
+    {
+      name: "number$ebnf$3",
+      symbols: ["number$ebnf$3", /[0-9]/],
+      postprocess: function arrpush(d) {
+        return d[0].concat([d[1]]);
+      },
+    },
+    {
+      name: "number",
+      symbols: ["number$ebnf$3"],
+      postprocess: ([value]) => parseFloat(value),
+    },
   ],
   ParserStart: "comparison",
 };
